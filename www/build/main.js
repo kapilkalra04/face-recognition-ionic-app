@@ -162,8 +162,6 @@ var SetupPage = /** @class */ (function () {
             alpha: 1
         };
         var pictureOpts = {
-            width: window.screen.width,
-            height: window.screen.height,
             quality: 100
         };
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {

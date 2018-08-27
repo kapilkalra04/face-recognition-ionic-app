@@ -92,8 +92,6 @@ export class SetupPage {
 	};
 
 	const pictureOpts: CameraPreviewPictureOptions = {
-		width: window.screen.width,
-		height: window.screen.height,
 		quality: 100
 	};
 
