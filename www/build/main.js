@@ -55,7 +55,7 @@ var HelloIonicPage = /** @class */ (function () {
     }
     HelloIonicPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-hello-ionic',template:/*ion-inline-start:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\hello-ionic\hello-ionic.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Hello World</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <h3>Welcome to Face Recognition Demo App!</h3>\n  <h5>Fasten your seat-belts</h5>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc lobortis mattis aliquam faucibus. Tristique nulla aliquet enim tortor at auctor urna nunc. Sit amet massa vitae tortor condimentum. Scelerisque felis imperdiet proin fermentum leo vel. A diam maecenas sed enim ut sem viverra aliquet. Quis eleifend quam adipiscing vitae proin sagittis. Pellentesque adipiscing commodo elit at. Mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Nunc vel risus commodo viverra maecenas accumsan lacus vel. Viverra justo nec ultrices dui sapien.\n  </p>\n  <p>\n    <button ion-button color="primary" menuToggle>Toggle Menu</button>\n  </p>\n</ion-content>\n'/*ion-inline-end:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\hello-ionic\hello-ionic.html"*/
+            selector: 'page-hello-ionic',template:/*ion-inline-start:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\hello-ionic\hello-ionic.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Hello World</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <h3 style="color: #03a9f4;">Welcome to Face Recognition Demo App!</h3>\n  <h5>Fasten your seat-belts</h5>\n  <p>\n    Verify whether you are part of our library of trusted faces or not. We use OpenCV, Tensorflow, Keras and FaceNet to achieve this.  \n  </p>\n  <p style="font-style: italic;">\n    Explore the app though the side menu.\n  </p>\n  <!-- <p>\n    <button ion-button color="primary" menuToggle>Toggle Menu</button>\n  </p> -->\n</ion-content>\n'/*ion-inline-end:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\hello-ionic\hello-ionic.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], HelloIonicPage);
@@ -94,25 +94,25 @@ var SetupPage = /** @class */ (function () {
         this.cameraPreview = cameraPreview;
         this.file = file;
         this.file.checkDir(this.file.externalDataDirectory, 'train-unprocessed').then(function (res) {
-            alert('train-unprocessed-dir-present');
-            _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
-            alert(_this.trainPath);
-            _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
+            /*alert('train-unprocessed-dir-present');
+            */ _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
+            /*alert(this.trainPath)
+            */ _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                 _this.empCount = Number(res);
-                alert(_this.empCount);
+                /*alert(this.empCount);*/
             }, function (err) {
                 alert(JSON.stringify(err));
             });
         }, function (err) {
             _this.file.createDir(_this.file.externalDataDirectory, 'train-unprocessed', true).then(function (res) {
-                alert('directory-created');
-                _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
-                alert(_this.trainPath);
-                _this.file.writeFile(_this.file.externalDataDirectory, 'empCount.txt', '0').then(function (res) {
-                    alert('file-created');
-                    _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
+                /*alert('directory-created');
+                */ _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
+                /*alert(this.trainPath)
+                */ _this.file.writeFile(_this.file.externalDataDirectory, 'empCount.txt', '0').then(function (res) {
+                    /*alert('file-created');
+                    */ _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                         _this.empCount = Number(res);
-                        alert(_this.empCount);
+                        /*alert(this.empCount);*/
                     }, function (err) {
                         alert(JSON.stringify(err));
                     });
@@ -158,7 +158,7 @@ var SetupPage = /** @class */ (function () {
             height: window.screen.height,
             camera: 'front',
             tapPhoto: false,
-            toBack: true,
+            toBack: false,
             alpha: 1
         };
         var pictureOpts = {
@@ -168,6 +168,11 @@ var SetupPage = /** @class */ (function () {
             alert(res);
             _this.cameraPreview.takePicture(pictureOpts).then(function (imageData) {
                 alert('captured');
+                _this.file.writeFile(_this.trainPath, 'EMP' + String(_this.empCount + 1) + '.txt', imageData).then(function (res) {
+                    alert('image-transcribed');
+                }, function (err) {
+                    alert(JSON.stringify(err));
+                });
                 var blob = _this.getBlob(imageData, 'jpeg');
                 _this.file.writeFile(_this.trainPath, 'EMP' + String(_this.empCount + 1) + '.jpeg', blob).then(function (res) {
                     alert('image-saved');
@@ -192,7 +197,7 @@ var SetupPage = /** @class */ (function () {
     };
     SetupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3>Upload Employee Photos!</h3>\n\n  <p>\n\n    Look into the camera and press capture. It\'s that simple.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="primary" small round outline (click)="onClick($event);">Capture</button>\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\setup\setup.html"*/
+            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3 style="color: #03a9f4">Upload Photos to the Library!</h3>\n\n  <p>\n\n    Add yourself to our library of trusted faces.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Upload</button>\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Desktop\tutorialProject\src\pages\setup\setup.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__["a" /* CameraPreview */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_file__["a" /* File */]])
     ], SetupPage);

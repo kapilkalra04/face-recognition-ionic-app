@@ -46,25 +46,25 @@ export class SetupPage {
 
   	constructor(private cameraPreview: CameraPreview, private file: File) {
   		this.file.checkDir(this.file.externalDataDirectory,'train-unprocessed').then((res) => {
-  			alert('train-unprocessed-dir-present');
-  			this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
-  			alert(this.trainPath)
-  			this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
+  			/*alert('train-unprocessed-dir-present');
+  			*/this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
+  			/*alert(this.trainPath)
+  			*/this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
   				this.empCount = Number(res);
-  				alert(this.empCount); 
+  				/*alert(this.empCount);*/ 
   			}, (err) => {
   				alert(JSON.stringify(err));
   			});
   		}, (err) => {
   			this.file.createDir(this.file.externalDataDirectory, 'train-unprocessed', true).then((res) => {
-  				alert('directory-created');
-  				this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
-  				alert(this.trainPath)
-  				this.file.writeFile(this.file.externalDataDirectory,'empCount.txt','0').then((res) => {
-  					alert('file-created');
-  					this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
+  				/*alert('directory-created');
+  				*/this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
+  				/*alert(this.trainPath)
+  				*/this.file.writeFile(this.file.externalDataDirectory,'empCount.txt','0').then((res) => {
+  					/*alert('file-created');
+  					*/this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
 		  				this.empCount = Number(res);
-		  				alert(this.empCount); 
+		  				/*alert(this.empCount);*/ 
 		  			}, (err) => {
 		  				alert(JSON.stringify(err));
 		  			});
@@ -87,7 +87,7 @@ export class SetupPage {
 		height: window.screen.height,
 		camera: 'front',
 		tapPhoto: false,
-		toBack: true,
+		toBack: false,
 		alpha: 1
 	};
 
@@ -100,6 +100,11 @@ export class SetupPage {
 			alert(res)
 			this.cameraPreview.takePicture(pictureOpts).then((imageData) => {
 				alert('captured');
+				this.file.writeFile(this.trainPath,'EMP'+String(this.empCount+1)+'.txt',imageData).then((res) => {
+					alert('image-transcribed');
+				}, (err) => {
+					alert(JSON.stringify(err));
+				});
 				var blob = this.getBlob(imageData,'jpeg');
 				this.file.writeFile(this.trainPath,'EMP'+String(this.empCount+1)+'.jpeg',blob).then((res) => {
 					alert('image-saved');
@@ -122,4 +127,6 @@ export class SetupPage {
 		  this.cameraPreview.stopCamera();
 		});
   	}
+
+  	
 }
