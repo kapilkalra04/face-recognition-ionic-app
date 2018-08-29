@@ -10,6 +10,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CameraPreview } from '@ionic-native/camera-preview';
 import { File } from '@ionic-native/file';
+import { ConnectorService } from './connector.service';
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
   declarations: [
@@ -29,9 +31,11 @@ import { File } from '@ionic-native/file';
   ],
   providers: [
     StatusBar,
+    ConnectorService,
     SplashScreen,
     CameraPreview,
     File,
+    HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

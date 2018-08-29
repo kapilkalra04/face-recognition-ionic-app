@@ -15,10 +15,15 @@
   <p>
     Verify whether you are part of our library of trusted faces or not. We use OpenCV, Tensorflow, Keras and FaceNet to achieve this.  
   </p>
-  <p style="font-style: italic;">
-    Explore the app though the side menu.
+  <p>
+    <ion-item>
+      <ion-input type="url" [(ngModel)]="url" placeholder="Locally Hosted Python Flask Server IP"></ion-input>
+    </ion-item>
   </p>
-  <!-- <p>
-    <button ion-button color="primary" menuToggle>Toggle Menu</button>
-  </p> -->
+  <p>
+    <button ion-button color="primary" (click)="connect()" >Connect</button>
+  </p>
+  <p>
+    {{message}}
+  </p>
 </ion-content>

@@ -88,5 +88,6 @@
     </plugin>
     <plugin name="cordova-plugin-camera-preview" spec="https://github.com/cordova-plugin-camera-preview/cordova-plugin-camera-preview.git" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
     <engine name="android" spec="^7.0.0" />
 </widget>
