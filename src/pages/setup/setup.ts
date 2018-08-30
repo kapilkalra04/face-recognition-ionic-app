@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions } from '@ionic-native/camera-preview';
 import { File } from '@ionic-native/file';
-/*import * as toImage from 'base64-img';
-*/
+import { ConnectorService } from '../../app/connector.service';
+import { HTTP } from '@ionic-native/http';
+
 
 @Component({
   selector: 'page-setup',
@@ -12,59 +13,24 @@ export class SetupPage {
 	empCount: number;
 	trainPath: string;
 	image: any;
+	message: string;
 
-	/**
-	 * Turn base 64 image into a blob, so we can send it using multipart/form-data posts
-	 * @param b64Data
-	 * @param contentType
-	 * @param sliceSize
-	 * @return {Blob}
-	 */
-	private getBlob(b64Data:string, contentType:string, sliceSize:number= 512) {
-	    contentType = contentType || '';
-	    sliceSize = sliceSize || 512;
-
-	    let byteCharacters = atob(b64Data);
-	    let byteArrays = [];
-
-	    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-	        let slice = byteCharacters.slice(offset, offset + sliceSize);
-
-	        let byteNumbers = new Array(slice.length);
-	        for (let i = 0; i < slice.length; i++) {
-	            byteNumbers[i] = slice.charCodeAt(i);
-	        }
-
-	        let byteArray = new Uint8Array(byteNumbers);
-
-	        byteArrays.push(byteArray);
-	    }
-
-	    let blob = new Blob(byteArrays, {type: contentType});
-	    return blob;
-	}
-
-  	constructor(private cameraPreview: CameraPreview, private file: File) {
+	constructor(private cameraPreview: CameraPreview, private file: File, private connector: ConnectorService, private http: HTTP) {
   		this.file.checkDir(this.file.externalDataDirectory,'train-unprocessed').then((res) => {
-  			/*alert('train-unprocessed-dir-present');
-  			*/this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
-  			/*alert(this.trainPath)
-  			*/this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
+  			this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
+  			this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
   				this.empCount = Number(res);
-  				/*alert(this.empCount);*/ 
+  				this.message = "Current number of trusted faces = " + this.empCount;
   			}, (err) => {
   				alert(JSON.stringify(err));
   			});
   		}, (err) => {
   			this.file.createDir(this.file.externalDataDirectory, 'train-unprocessed', true).then((res) => {
-  				/*alert('directory-created');
-  				*/this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
-  				/*alert(this.trainPath)
-  				*/this.file.writeFile(this.file.externalDataDirectory,'empCount.txt','0').then((res) => {
-  					/*alert('file-created');
-  					*/this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
+  				this.trainPath = this.file.externalDataDirectory + 'train-unprocessed';
+  				this.file.writeFile(this.file.externalDataDirectory,'empCount.txt','0').then((res) => {
+  					this.file.readAsText(this.file.externalDataDirectory,'empCount.txt').then((res) => {
 		  				this.empCount = Number(res);
-		  				/*alert(this.empCount);*/ 
+		  				this.message = "Current number of trusted faces = " + this.empCount;
 		  			}, (err) => {
 		  				alert(JSON.stringify(err));
 		  			});
@@ -97,27 +63,17 @@ export class SetupPage {
 
   	this.cameraPreview.startCamera(cameraPreviewOpts).then(
 		(res) => {
-			alert(res)
+			alert('Press OK to Capture a Photo')
 			this.cameraPreview.takePicture(pictureOpts).then((imageData) => {
-				alert('captured');
-				this.file.writeFile(this.trainPath,'EMP'+String(this.empCount+1)+'.txt',imageData).then((res) => {
-					alert('image-transcribed');
-				}, (err) => {
-					alert(JSON.stringify(err));
-				});
-				var blob = this.getBlob(imageData,'jpeg');
-				this.file.writeFile(this.trainPath,'EMP'+String(this.empCount+1)+'.jpeg',blob).then((res) => {
-					alert('image-saved');
+				this.http.post(this.connector.apiURL + '/upload',{'imageData':imageData, 'empCount':this.empCount},{}).then((res) => {
+					alert('Image Upload Successful')
 					this.empCount = this.empCount + 1;
 					this.file.writeExistingFile(this.file.externalDataDirectory,'empCount.txt',String(this.empCount));
+					this.message = "Current number of trusted faces = " + this.empCount;
 				}, (err) => {
 					alert(JSON.stringify(err));
 				});
-				this.cameraPreview.stopCamera().then((res) => {
-			  		alert('stopped')
-			  	}, (err)=> {
-			  		alert(err)
-			  	});
+				this.cameraPreview.stopCamera();
 			}, (err) => {
 			  alert(err);
 			  this.cameraPreview.stopCamera();
@@ -128,5 +84,12 @@ export class SetupPage {
 		});
   	}
 
-  	
+  	onClick2(event: Event) {
+  	this.http.get(this.connector.apiURL + '/train',{},{}).then((res) => {
+  		alert(res.data); 
+  	}, (err) => {
+  		alert(JSON.stringify(err))
+  	});
+  }
+
 }

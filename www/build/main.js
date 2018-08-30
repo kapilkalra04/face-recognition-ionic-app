@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 108:
+/***/ 110:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -13,11 +13,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 108;
+webpackEmptyAsyncContext.id = 110;
 
 /***/ }),
 
-/***/ 150:
+/***/ 152:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -30,18 +30,18 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 150;
+webpackEmptyAsyncContext.id = 152;
 
 /***/ }),
 
-/***/ 190:
+/***/ 192:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelloIonicPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_connector_service__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_connector_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(99);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -81,33 +81,6 @@ var HelloIonicPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 191:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConnectorService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var ConnectorService = /** @class */ (function () {
-    function ConnectorService() {
-    }
-    ConnectorService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])()
-    ], ConnectorService);
-    return ConnectorService;
-}());
-
-;
-//# sourceMappingURL=connector.service.js.map
-
-/***/ }),
-
 /***/ 194:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -116,6 +89,8 @@ var ConnectorService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_file__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_connector_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(99);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -128,33 +103,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/*import * as toImage from 'base64-img';
-*/
+
+
 var SetupPage = /** @class */ (function () {
-    function SetupPage(cameraPreview, file) {
+    function SetupPage(cameraPreview, file, connector, http) {
         var _this = this;
         this.cameraPreview = cameraPreview;
         this.file = file;
+        this.connector = connector;
+        this.http = http;
         this.file.checkDir(this.file.externalDataDirectory, 'train-unprocessed').then(function (res) {
-            /*alert('train-unprocessed-dir-present');
-            */ _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
-            /*alert(this.trainPath)
-            */ _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
+            _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
+            _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                 _this.empCount = Number(res);
-                /*alert(this.empCount);*/
+                _this.message = "Current number of trusted faces = " + _this.empCount;
             }, function (err) {
                 alert(JSON.stringify(err));
             });
         }, function (err) {
             _this.file.createDir(_this.file.externalDataDirectory, 'train-unprocessed', true).then(function (res) {
-                /*alert('directory-created');
-                */ _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
-                /*alert(this.trainPath)
-                */ _this.file.writeFile(_this.file.externalDataDirectory, 'empCount.txt', '0').then(function (res) {
-                    /*alert('file-created');
-                    */ _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
+                _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
+                _this.file.writeFile(_this.file.externalDataDirectory, 'empCount.txt', '0').then(function (res) {
+                    _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                         _this.empCount = Number(res);
-                        /*alert(this.empCount);*/
+                        _this.message = "Current number of trusted faces = " + _this.empCount;
                     }, function (err) {
                         alert(JSON.stringify(err));
                     });
@@ -166,31 +138,6 @@ var SetupPage = /** @class */ (function () {
             });
         });
     }
-    /**
-     * Turn base 64 image into a blob, so we can send it using multipart/form-data posts
-     * @param b64Data
-     * @param contentType
-     * @param sliceSize
-     * @return {Blob}
-     */
-    SetupPage.prototype.getBlob = function (b64Data, contentType, sliceSize) {
-        if (sliceSize === void 0) { sliceSize = 512; }
-        contentType = contentType || '';
-        sliceSize = sliceSize || 512;
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-            var byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
-        var blob = new Blob(byteArrays, { type: contentType });
-        return blob;
-    };
     SetupPage.prototype.onClick = function (event) {
         var _this = this;
         var cameraPreviewOpts = {
@@ -207,27 +154,17 @@ var SetupPage = /** @class */ (function () {
             quality: 100
         };
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
-            alert(res);
+            alert('Press OK to Capture a Photo');
             _this.cameraPreview.takePicture(pictureOpts).then(function (imageData) {
-                alert('captured');
-                _this.file.writeFile(_this.trainPath, 'EMP' + String(_this.empCount + 1) + '.txt', imageData).then(function (res) {
-                    alert('image-transcribed');
-                }, function (err) {
-                    alert(JSON.stringify(err));
-                });
-                var blob = _this.getBlob(imageData, 'jpeg');
-                _this.file.writeFile(_this.trainPath, 'EMP' + String(_this.empCount + 1) + '.jpeg', blob).then(function (res) {
-                    alert('image-saved');
+                _this.http.post(_this.connector.apiURL + '/upload', { 'imageData': imageData, 'empCount': _this.empCount }, {}).then(function (res) {
+                    alert('Image Upload Successful');
                     _this.empCount = _this.empCount + 1;
                     _this.file.writeExistingFile(_this.file.externalDataDirectory, 'empCount.txt', String(_this.empCount));
+                    _this.message = "Current number of trusted faces = " + _this.empCount;
                 }, function (err) {
                     alert(JSON.stringify(err));
                 });
-                _this.cameraPreview.stopCamera().then(function (res) {
-                    alert('stopped');
-                }, function (err) {
-                    alert(err);
-                });
+                _this.cameraPreview.stopCamera();
             }, function (err) {
                 alert(err);
                 _this.cameraPreview.stopCamera();
@@ -237,11 +174,18 @@ var SetupPage = /** @class */ (function () {
             _this.cameraPreview.stopCamera();
         });
     };
+    SetupPage.prototype.onClick2 = function (event) {
+        this.http.get(this.connector.apiURL + '/train', {}, {}).then(function (res) {
+            alert('Message: ' + res.data);
+        }, function (err) {
+            alert(JSON.stringify(err));
+        });
+    };
     SetupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3 style="color: #03a9f4">Upload Photos to the Library!</h3>\n\n  <p>\n\n    Add yourself to our library of trusted faces.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Upload</button>\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/
+            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3 style="color: #03a9f4">Upload Photos to the Library!</h3>\n\n  <p>\n\n    Add yourself to our library of trusted faces.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Upload</button>\n\n    <button ion-button color="dark" small round outline (click)="onClick2($event);">Process</button>\n\n  </p>\n\n  <p>\n\n    {{message}}\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__["a" /* CameraPreview */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_file__["a" /* File */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__["a" /* CameraPreview */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_file__["a" /* File */], __WEBPACK_IMPORTED_MODULE_3__app_connector_service__["a" /* ConnectorService */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]])
     ], SetupPage);
     return SetupPage;
 }());
@@ -271,16 +215,16 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(265);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_hello_ionic_hello_ionic__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_hello_ionic_hello_ionic__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_setup_setup__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_status_bar__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_splash_screen__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_camera_preview__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_file__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__connector_service__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_http__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__connector_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_http__ = __webpack_require__(99);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -345,8 +289,8 @@ var AppModule = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_hello_ionic_hello_ionic__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_hello_ionic_hello_ionic__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_setup_setup__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(198);
@@ -411,6 +355,33 @@ var MyApp = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=app.component.js.map
+
+/***/ }),
+
+/***/ 98:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConnectorService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var ConnectorService = /** @class */ (function () {
+    function ConnectorService() {
+    }
+    ConnectorService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])()
+    ], ConnectorService);
+    return ConnectorService;
+}());
+
+;
+//# sourceMappingURL=connector.service.js.map
 
 /***/ })
 
