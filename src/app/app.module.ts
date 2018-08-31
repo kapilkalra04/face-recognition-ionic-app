@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 
 import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
 import { SetupPage } from '../pages/setup/setup';
+import { VerifyPage } from '../pages/verify/verify';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,7 +18,8 @@ import { HTTP } from '@ionic-native/http';
   declarations: [
     MyApp,
     HelloIonicPage,
-    SetupPage
+    SetupPage,
+    VerifyPage
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,8 @@ import { HTTP } from '@ionic-native/http';
   entryComponents: [
     MyApp,
     HelloIonicPage,
-    SetupPage
+    SetupPage,
+    VerifyPage
   ],
   providers: [
     StatusBar,

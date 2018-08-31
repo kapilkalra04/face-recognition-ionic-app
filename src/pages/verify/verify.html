@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Verification Page</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <h3 style="color: #03a9f4">Test whether you belong to our trusted face Library!</h3>
+  <p>
+    Press the VERIFY button and wait for the magic to happen.
+  </p>
+  <p>
+    <button ion-button color="dark" small round outline (click)="onClick($event);">Verify</button>
+  </p>
+  <p>
+    {{message}}
+  </p>
+</ion-content>

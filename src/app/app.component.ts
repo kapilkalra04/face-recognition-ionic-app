@@ -4,6 +4,8 @@ import { Platform, MenuController, Nav } from 'ionic-angular';
 
 import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
 import { SetupPage } from '../pages/setup/setup';
+import { VerifyPage } from '../pages/verify/verify';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,7 +32,8 @@ export class MyApp {
     // set our app's pages
     this.pages = [
       { title: 'Hello World', component: HelloIonicPage },
-      { title: 'Setup', component: SetupPage}
+      { title: 'Setup', component: SetupPage},
+      { title: 'Verify', component: VerifyPage}
     ];
   }
 
