@@ -70,7 +70,7 @@ var HelloIonicPage = /** @class */ (function () {
     };
     HelloIonicPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-hello-ionic',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\hello-ionic\hello-ionic.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Hello World</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <h3 style="color: #03a9f4;">Welcome to Face Recognition Demo App!</h3>\n  <h5>Fasten your seat-belts</h5>\n  <p>\n    Verify whether you are part of our library of trusted faces or not. We use OpenCV, Tensorflow, Keras and FaceNet to achieve this.  \n  </p>\n  <p>\n    <ion-item>\n      <ion-input type="url" [(ngModel)]="url" placeholder="Locally Hosted Python Flask Server IP"></ion-input>\n    </ion-item>\n  </p>\n  <p>\n    <button ion-button color="primary" (click)="connect()" >Connect</button>\n  </p>\n  <p>\n    {{message}}\n  </p>\n</ion-content>\n'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\hello-ionic\hello-ionic.html"*/
+            selector: 'page-hello-ionic',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\hello-ionic\hello-ionic.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Hello World</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <h1 style="color: #03a9f4;">Welcome to Face Recognition Demo App!</h1>\n  <h4>Fasten your seat-belts</h4>\n  <p style="font-size: 13pt">\n    Verify whether you are part of our library of trusted faces or not. We use <b>OpenCV, Tensorflow, Keras and FaceNet</b> to achieve this.  \n  </p>\n  <p>\n    <ion-item>\n      <ion-input type="url" [(ngModel)]="url" placeholder="Locally Hosted Python Flask Server IP"></ion-input>\n    </ion-item>\n  </p>\n  <p>\n    <button ion-button color="primary" (click)="connect()" >Connect</button>\n  </p>\n  <p style="font-size: 13pt">\n    {{message}}\n  </p>\n</ion-content>\n'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\hello-ionic\hello-ionic.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_connector_service__["a" /* ConnectorService */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */]])
     ], HelloIonicPage);
@@ -112,11 +112,11 @@ var SetupPage = /** @class */ (function () {
         this.file = file;
         this.connector = connector;
         this.http = http;
+        this.http.setRequestTimeout(1000);
         this.file.checkDir(this.file.externalDataDirectory, 'train-unprocessed').then(function (res) {
             _this.trainPath = _this.file.externalDataDirectory + 'train-unprocessed';
             _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                 _this.empCount = Number(res);
-                _this.message = "Current number of trusted faces = " + _this.empCount;
             }, function (err) {
                 alert(JSON.stringify(err));
             });
@@ -126,7 +126,6 @@ var SetupPage = /** @class */ (function () {
                 _this.file.writeFile(_this.file.externalDataDirectory, 'empCount.txt', '0').then(function (res) {
                     _this.file.readAsText(_this.file.externalDataDirectory, 'empCount.txt').then(function (res) {
                         _this.empCount = Number(res);
-                        _this.message = "Current number of trusted faces = " + _this.empCount;
                     }, function (err) {
                         alert(JSON.stringify(err));
                     });
@@ -155,12 +154,18 @@ var SetupPage = /** @class */ (function () {
         };
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
             alert('Press OK to Capture a Photo');
+            _this.message = "Uploading...";
+            _this.message2 = null;
+            _this.message3 = null;
+            _this.message4 = null;
+            _this.message5 = null;
+            _this.message6 = null;
             _this.cameraPreview.takePicture(pictureOpts).then(function (imageData) {
                 _this.http.post(_this.connector.apiURL + '/upload', { 'imageData': imageData, 'empCount': _this.empCount }, {}).then(function (res) {
                     alert('Image Upload Successful');
                     _this.empCount = _this.empCount + 1;
                     _this.file.writeExistingFile(_this.file.externalDataDirectory, 'empCount.txt', String(_this.empCount));
-                    _this.message = "Current number of trusted faces = " + _this.empCount;
+                    _this.message = "Process?";
                 }, function (err) {
                     alert(JSON.stringify(err));
                 });
@@ -175,15 +180,27 @@ var SetupPage = /** @class */ (function () {
         });
     };
     SetupPage.prototype.onClick2 = function (event) {
+        var _this = this;
+        this.message = null;
+        this.message2 = "Calculating Face Embeddings, using FaceNet...";
+        setTimeout(function () { _this.message3 = "STEP-1: Crop-out the main Face from the captured image (FACE DETECTION)"; }, 5000);
+        setTimeout(function () { _this.message4 = "STEP-2: Straighten the cropped face using eye detection (FACE-ALIGNMENT)"; }, 10000);
+        setTimeout(function () { _this.message5 = "STEP-3: Generate and Store the Facial Embeddings for the cropped Face(ONE-SHOT LEARNING)"; }, 15000);
+        setTimeout(function () { _this.message6 = "Repeat for all photos present inside the library..."; }, 20000);
         this.http.get(this.connector.apiURL + '/train', {}, {}).then(function (res) {
             alert(res.data);
+            _this.message2 = "Done";
+            _this.message3 = null;
+            _this.message4 = null;
+            _this.message5 = null;
+            _this.message6 = null;
         }, function (err) {
             alert(JSON.stringify(err));
         });
     };
     SetupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3 style="color: #03a9f4">Upload Photos to the Library!</h3>\n\n  <p>\n\n    Add yourself to our library of trusted faces.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Upload</button>\n\n    <button ion-button color="dark" small round outline (click)="onClick2($event);">Process</button>\n\n  </p>\n\n  <p>\n\n    {{message}}\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/
+            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Setup Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h1 style="color: #03a9f4">Upload Photos to the Library!</h1>\n\n  <h4>\n\n    Add yourself to our library of trusted faces.\n\n  </h4>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Upload</button>\n\n    <button ion-button color="dark" small round outline (click)="onClick2($event);">Process</button>\n\n  </p>\n\n  <p style="font-size: 13pt">\n\n    {{message}}\n\n    <br>\n\n    {{message2}}\n\n    <br>\n\n    {{message3}}\n\n    <br>\n\n    {{message4}}\n\n    <br>\n\n    {{message5}}\n\n    <br><br>\n\n    {{message6}}\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\setup\setup.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__["a" /* CameraPreview */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_file__["a" /* File */], __WEBPACK_IMPORTED_MODULE_3__app_connector_service__["a" /* ConnectorService */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]])
     ], SetupPage);
@@ -242,11 +259,23 @@ var VerifyPage = /** @class */ (function () {
         }
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
             _this.message = "Uploading.....";
+            _this.message2 = null;
+            _this.message3 = null;
+            _this.message4 = null;
+            _this.message5 = null;
             setTimeout(function () {
                 _this.cameraPreview.takePicture(pictureOpts).then(function (imageData) {
-                    _this.message = "Working.....";
+                    _this.message = "Comparing Face Embeddings(of test vs train subjects) generated using FaceNet ...";
+                    setTimeout(function () { _this.message2 = "STEP-1: Crop-out the main Face from the captured image (FACE DETECTION)"; }, 5000);
+                    setTimeout(function () { _this.message3 = "STEP-2: Straighten the cropped face using eye detection (FACE-ALIGNMENT)"; }, 10000);
+                    setTimeout(function () { _this.message4 = "STEP-3: Generate and compare the Facial Embedding with the stored facial embeddings(FACE-RECOGNITION)"; }, 15000);
                     _this.http.post(_this.connector.apiURL + '/verify', { 'imageData': imageData }, {}).then(function (res) {
-                        _this.message = 'Norm Distances' + res.data;
+                        var response = JSON.parse(res.data);
+                        _this.message = 'Norm Distances - ' + response.norm;
+                        _this.message2 = 'Are you an employee? - ' + response.result;
+                        _this.message3 = null;
+                        _this.message4 = null;
+                        _this.message5 = null;
                     }, function (err) {
                         _this.message = err.data;
                         alert(JSON.stringify(err));
@@ -265,7 +294,7 @@ var VerifyPage = /** @class */ (function () {
     };
     VerifyPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\verify\verify.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Verification Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h3 style="color: #03a9f4">Test whether you belong to our trusted face Library!</h3>\n\n  <p>\n\n    Press the VERIFY button and wait for the magic to happen.\n\n  </p>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Verify</button>\n\n  </p>\n\n  <p>\n\n    {{message}}\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\verify\verify.html"*/
+            selector: 'page-setup',template:/*ion-inline-start:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\verify\verify.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Verification Page</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <h1 style="color: #03a9f4">Test whether you belong to our trusted face Library!</h1>\n\n  <h4>Press the VERIFY button and wait for the magic to happen.</h4>\n\n  <p>\n\n    <button ion-button color="dark" small round outline (click)="onClick($event);">Verify</button>\n\n  </p>\n\n  <p style="font-size: 13pt">\n\n    {{message}}\n\n  </p>\n\n  <p style="font-size: 13pt">\n\n    {{message2}}\n\n    <br>\n\n    {{message3}}\n\n    <br>\n\n    {{message4}}\n\n    <br>\n\n    {{message5}}\n\n    <br>\n\n    {{message6}}\n\n  </p>\n\n</ion-content>'/*ion-inline-end:"C:\Users\kapilkalra04\Documents\CloudCherry Analytics\CC04_face-off-demo\face-recognition-ionic-app\src\pages\verify\verify.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_native_camera_preview__["a" /* CameraPreview */], __WEBPACK_IMPORTED_MODULE_2__app_connector_service__["a" /* ConnectorService */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */]])
     ], VerifyPage);

@@ -10,6 +10,11 @@ import { HTTP } from '@ionic-native/http';
 })
 export class VerifyPage {
 	message: string;
+	message2: string;
+	message5: string;
+	message4: string;
+	message3: string;
+	message6: string;
 
 	constructor(private cameraPreview: CameraPreview, private connector: ConnectorService, private http: HTTP) {
    	}
@@ -39,11 +44,23 @@ export class VerifyPage {
 	this.cameraPreview.startCamera(cameraPreviewOpts).then(
 		(res) => {
 			this.message = "Uploading....."
+			this.message2 = null; 
+			this.message3 = null;
+			this.message4 = null;
+			this.message5 = null;
 			setTimeout(()=>{
 				this.cameraPreview.takePicture(pictureOpts).then((imageData) => {
-				this.message = "Working....."
-				this.http.post(this.connector.apiURL + '/verify',{'imageData':imageData},{}).then((res) => {
-					this.message = 'Norm Distances' + res.data;
+				this.message = "Comparing Face Embeddings(of test vs train subjects) generated using FaceNet ..."
+				setTimeout(() => {this.message2 = "STEP-1: Crop-out the main Face from the captured image (FACE DETECTION)"}, 5000)
+			  	setTimeout(() => {this.message3 = "STEP-2: Straighten the cropped face using eye detection (FACE-ALIGNMENT)"}, 10000)
+			  	setTimeout(() => {this.message4 = "STEP-3: Generate and compare the Facial Embedding with the stored facial embeddings(FACE-RECOGNITION)"}, 15000)
+			  	this.http.post(this.connector.apiURL + '/verify',{'imageData':imageData},{}).then((res) => {
+			  		let response = JSON.parse(res.data);
+					this.message = 'Norm Distances - ' + response.norm;
+					this.message2 = 'Are you an employee? - ' + response.result  
+					this.message3 = null;
+					this.message4 = null;
+					this.message5 = null;
 				}, (err) => {
 					this.message = err.data;
 					alert(JSON.stringify(err));
